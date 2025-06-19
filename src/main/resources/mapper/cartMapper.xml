@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.njhtr.yaopenghao.mapper.CartMapper">
 
+    <select id="findById" resultType="com.njhtr.yaopenghao.entity.dto.CartItem">
+        SELECT * FROM t_yaopenghao_cart_items
+        WHERE id = #{id} AND del_flay = '0'
+    </select>
+
+    <select id="findWithProductInfo" resultType="com.njhtr.yaopenghao.entity.dto.CartItem">
+        SELECT
+            ci.id,
+            ci.user_id AS userId,
+            ci.product_id AS productId,
+            ci.quantity,
+            ci.subtotal,
+            ci.create_date AS createDate,
+            ci.update_date AS updateDate,
+            ci.del_flay AS delFlay,
+            p.name AS productName,
+            p.price AS productPrice,
+            p.image AS productImage
+        FROM t_yaopenghao_cart_items ci
+                 JOIN t_yaopenghao_products p ON ci.product_id = p.id
+        WHERE ci.id = #{id} AND ci.del_flay = '0'
+    </select>
+
+    <update id="updateQuantity">
+        UPDATE t_yaopenghao_cart_items
+        SET
+            quantity = #{quantity},
+            update_date = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateSubtotal">
+        UPDATE t_yaopenghao_cart_items
+        SET
+            subtotal = #{subtotal},
+            update_date = NOW()
+        WHERE id = #{id}
+    </update>
 </mapper>

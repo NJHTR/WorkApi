@@ -3,8 +3,6 @@ package com.njhtr.yaopenghao.entity.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 @Data
