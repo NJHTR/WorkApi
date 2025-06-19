@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
-
+<mapper namespace="com.njhtr.yaopenghao.mapper.productsMapper">
+    <select id="getById" resultType="com.njhtr.yaopenghao.entity.dto.Product">
+        SELECT
+        id,
+        name,
+        des,
+        CAST(price AS DECIMAL(10,2)) AS price,  <!-- 类型转换 -->
+        CAST(stock AS UNSIGNED) AS stock,
+        CAST(sales AS UNSIGNED) AS sales,
+        images,
+        category_by AS categoryBy,
+        create_date AS createDate,
+        update_date AS updateDate,
+        del_flay AS delFlay
+        FROM t_yaopenghao_products
+        WHERE id = #{id} AND del_flay = '0'
+    </select>
 </mapper>

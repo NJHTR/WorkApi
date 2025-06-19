@@ -25,19 +25,71 @@
         WHERE ci.id = #{id} AND ci.del_flay = '0'
     </select>
 
-    <update id="updateQuantity">
+    <select id="findByUserId" resultType="com.njhtr.yaopenghao.entity.dto.CartItem">
+        SELECT
+        ci.id,
+        ci.user_id AS userId,
+        ci.product_id AS productId,
+        ci.quantity,
+        ci.subtotal,
+        ci.create_date AS createDate,
+        ci.update_date AS updateDate,
+        ci.del_flay AS delFlay,
+        p.name AS productName,
+        CAST(p.price AS DECIMAL(10,2)) AS productPrice, <!-- 类型转换 -->
+        SUBSTRING_INDEX(p.images, ',', 1) AS productImage <!-- 取第一张图片 -->
+        FROM t_yaopenghao_cart_items ci
+        JOIN t_yaopenghao_products p ON ci.product_id = p.id
+        WHERE ci.user_id = #{userId} AND ci.del_flay = '0'
+    </select>
+
+    <!-- 合并更新 -->
+    <update id="updateItem">
         UPDATE t_yaopenghao_cart_items
         SET
             quantity = #{quantity},
-            update_date = NOW()
-        WHERE id = #{id}
-    </update>
-
-    <update id="updateSubtotal">
-        UPDATE t_yaopenghao_cart_items
-        SET
             subtotal = #{subtotal},
             update_date = NOW()
         WHERE id = #{id}
     </update>
+
+    <!-- 逻辑删除 -->
+    <update id="logicalDelete">
+        UPDATE t_yaopenghao_cart_items
+        SET
+            del_flay = '1',
+            update_date = NOW()
+        WHERE id = #{id} AND del_flay = '0'
+    </update>
+
+    <!-- 插入购物车项 -->
+    <insert id="insert" parameterType="com.njhtr.yaopenghao.entity.dto.CartItem"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_yaopenghao_cart_items (
+            user_id,
+            product_id,
+            quantity,
+            subtotal,
+            create_date,
+            update_date,
+            del_flay
+        ) VALUES (
+                     #{userId},
+                     #{productId},
+                     #{quantity},
+                     #{subtotal},
+                     NOW(),
+                     NOW(),
+                     '0'
+                 )
+    </insert>
+
+    <!-- 根据用户和商品查找购物车项 -->
+    <select id="findByUserAndProduct" resultType="com.njhtr.yaopenghao.entity.dto.CartItem">
+        SELECT * FROM t_yaopenghao_cart_items
+        WHERE user_id = #{userId}
+          AND product_id = #{productId}
+          AND del_flay = '0'
+            LIMIT 1
+    </select>
 </mapper>
