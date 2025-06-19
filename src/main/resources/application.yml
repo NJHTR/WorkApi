@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_yaopenghao
+    username: root
+    password: yph20051018
+
+server:
+  port: 8181
+
+# 添加 MyBatis 配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.njhtr.yaopenghao.entity.dto
+  configuration:
+    jdbc-type-for-null: NULL
+    map-underscore-to-camel-case: true
+
+file:
+  upload-dir: ./uploads/

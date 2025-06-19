@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.njhtr.yaopenghao.mapper.UserMapper">
+    <resultMap type="com.njhtr.yaopenghao.entity.dto.User" id="UserMap">
+        <result property="id" column="id" />
+        <result property="email" column="email" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="gender" column="gender" />
+        <result property="city" column="city" />
+        <result property="createDate" column="create_date" />
+        <result property="updateDate" column="update_date" />
+        <result property="delFlay" column="del_flag" />
+    </resultMap>
+
+    <sql id="baseUserColumns">
+        <trim suffixOverrides=",">
+            id,
+            email,
+            username,
+            password,
+            gender,
+            city,
+            create_date,
+            update_date,
+            del_flag
+        </trim>
+    </sql>
+
+    <sql id="saveOrUpdateUserColumns">
+        <trim suffixOverrides=",">
+            <if test="dtoEntity.id != null">
+                id,
+            </if>
+            <if test="dtoEntity.email != null">
+                email,
+            </if>
+            <if test="dtoEntity.username != null">
+                username,
+            </if>
+            <if test="dtoEntity.password != null">
+                password,
+            </if>
+            <if test="dtoEntity.gender != null">
+                gender,
+            </if>
+            <if test="dtoEntity.city != null">
+                city,
+            </if>
+            <if test="dtoEntity.createDate != null">
+                create_date,
+            </if>
+            <if test="dtoEntity.updateDate != null">
+                update_date,
+            </if>
+            <if test="dtoEntity.delFlay != null">
+                del_flag,
+            </if>
+        </trim>
+    </sql>
+
+    <select id="findByEmail" resultMap="UserMap">
+        SELECT
+        <include refid="baseUserColumns"/>
+        FROM
+        t_yaopenghao_user
+        <where>
+            email = #{email}
+            and
+            del_flag = '0'
+        </where>
+    </select>
+
+    <insert id="register" parameterType="UserRegisterDto">
+        INSERT
+        INTO
+        t_yaopenghao_user (
+            email, username, password, gender, city, create_date, del_flag
+        ) VALUES (
+            #{email}, #{username}, #{password}, #{gender}, #{city}, NOW(), 0
+        )
+    </insert>
+
+    <update id="resetuser" parameterType="UserReSetDto">
+        UPDATE
+        t_yaopenghao_user
+        <set>
+            password = #{password},
+            update_date = NOW()
+        </set>
+        <where>
+            email = #{email}
+            and
+            del_flag = '0'
+        </where>
+    </update>
+
+    <update id="deluser">
+        UPDATE
+        t_yaopenghao_user
+        <set>
+            del_flag = '1',
+            update_date = NOW()
+        </set>
+        <where>
+            id
+            IN
+            <foreach collection="array" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="getUserList" resultMap="UserMap">
+        SELECT
+        <include refid="baseUserColumns"/>
+        FROM
+            t_yaopenghao_user
+        <where>
+            del_flag != '1'
+            <if test="keyword != null and  keyword != ''">
+                AND(
+                    email LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    username LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    city LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getUserCount" resultType="int">
+        SELECT
+        COUNT(
+        *
+        )
+        FROM
+        t_yaopenghao_user
+        <where>
+            del_flag != '1'
+            <if test="keyword != null and  keyword != ''">
+                AND(
+                    email LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    username LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    city LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+    </select>
+
+</mapper>
