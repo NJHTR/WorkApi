@@ -1,5 +1,6 @@
 package com.njhtr.yaopenghao.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -14,5 +15,6 @@ public class UserRegisterDto {
     @NonNull
     private String city;
     @NonNull
+    @JsonIgnore
     private String password;
 }
