@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
-public interface cartMapper {
+public interface CartMapper {
     CartItem findById(Long id);
-    List<CartItem> findByUserId(Long userId); // 新增方法
+    List<CartItem> findByUserId(@Param("userId") Long userId);
     int updateItem(@Param("id") Long id,
                    @Param("quantity") Integer quantity,
                    @Param("subtotal") BigDecimal subtotal); // 合并更新
@@ -29,4 +29,5 @@ public interface cartMapper {
     int updateQuantity(@Param("id") Long id, @Param("quantity") Integer quantity);
     int updateSubtotal(@Param("id") Long id, @Param("subtotal") BigDecimal subtotal);
     CartItem findWithProductInfo(@Param("id") Long id);
+
 }

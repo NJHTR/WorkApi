@@ -17,7 +17,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/Auth")
 @Validated
-public class authController {
+@CrossOrigin(origins = "http://localhost:8080/yaopenghao_war_exploded", allowCredentials = "true")
+public class AuthController {
     //注入UserService
     @Autowired
     private UserService userService;

@@ -19,7 +19,7 @@
             ci.del_flay AS delFlay,
             p.name AS productName,
             p.price AS productPrice,
-            p.image AS productImage
+            p.images AS productImage
         FROM t_yaopenghao_cart_items ci
                  JOIN t_yaopenghao_products p ON ci.product_id = p.id
         WHERE ci.id = #{id} AND ci.del_flay = '0'

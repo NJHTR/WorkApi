@@ -19,15 +19,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private LoginInterceptors loginInterceptors;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptors).excludePathPatterns("/Auth/register","/Auth/login","/Auth/resetuser");
-    }
-
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
-//        // 排除所有接口路径（开发环境专用）
-//        registry.addInterceptor(loginInterceptors)
-//                .excludePathPatterns("/**"); // 通配符匹配所有路径[2,7](@ref)
+//        registry.addInterceptor(loginInterceptors).excludePathPatterns("/Auth/register","/Auth/login","/Auth/resetuser");
 //    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 排除所有接口路径（开发环境专用）
+        registry.addInterceptor(loginInterceptors)
+                .excludePathPatterns("/**"); // 通配符匹配所有路径[2,7](@ref)
+    }
 }

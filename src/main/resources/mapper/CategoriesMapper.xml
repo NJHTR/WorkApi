@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.njhtr.yaopenghao.mapper.CategoriesMapper">
+
+    <resultMap id="BaseResultMap" type="com.njhtr.yaopenghao.entity.dto.Categories">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="des" property="des" jdbcType="VARCHAR"/>
+        <result column="images" property="images" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="del_flay" property="delFlay" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 查询所有未删除的分类 -->
+    <select id="findAllActiveCategories" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_yaopenghao_categories
+        WHERE del_flay = '0'
+        ORDER BY update_date DESC
+    </select>
+
+    <!-- 根据ID查询分类 -->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_yaopenghao_categories
+        WHERE id = #{id}
+    </select>
+
+    <!-- 统计分类下的商品数量 -->
+    <select id="countProductsByCategoryId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM t_yaopenghao_products
+        WHERE id = #{categoryId}
+          AND del_flay = '0'
+    </select>
+</mapper>

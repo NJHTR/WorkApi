@@ -6,26 +6,24 @@ import com.njhtr.yaopenghao.exception.BusinessException;
 import com.njhtr.yaopenghao.exception.DatabaseOperationException;
 import com.njhtr.yaopenghao.exception.InsufficientStockException;
 import com.njhtr.yaopenghao.exception.ResourceNotFoundException;
-import com.njhtr.yaopenghao.mapper.cartMapper;
-import com.njhtr.yaopenghao.mapper.productsMapper;
-import com.njhtr.yaopenghao.service.cartService;
-import org.apache.tomcat.util.http.parser.Authorization;
+import com.njhtr.yaopenghao.mapper.CartMapper;
+import com.njhtr.yaopenghao.mapper.ProductsMapper;
+import com.njhtr.yaopenghao.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 @Service
-public class cartServiceImpl implements cartService {
+public class CartServiceImpl implements CartService {
     @Autowired
-    private cartMapper cartMapper;
+    private CartMapper cartMapper;
 
     @Autowired
-    private productsMapper productsMapper;
+    private ProductsMapper productsMapper;
 
     @Override
     public List<CartItem> userCart(Long userId) { // 统一使用Long类型
@@ -79,6 +77,23 @@ public class cartServiceImpl implements cartService {
         // 检查删除结果
         if (result == 0) {
             throw new ResourceNotFoundException("购物车项不存在或已被删除");
+        }
+    }
+
+    @Override
+    public int getCartItemCount(Long userId) throws BusinessException {
+        try {
+            // 从数据库获取用户的所有购物车项
+            List<CartItem> cartItems = cartMapper.findByUserId(userId);
+
+            // 计算总数量
+            int totalCount = cartItems.stream()
+                    .mapToInt(CartItem::getQuantity)
+                    .sum();
+
+            return totalCount;
+        } catch (Exception e) {
+            throw new BusinessException("获取购物车数量失败", 50005);
         }
     }
 

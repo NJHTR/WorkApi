@@ -3,8 +3,9 @@ package com.njhtr.yaopenghao.api;
 import com.njhtr.yaopenghao.entity.dto.CartItem;
 import com.njhtr.yaopenghao.entity.response.Result;
 import com.njhtr.yaopenghao.exception.BusinessException;
-import com.njhtr.yaopenghao.service.cartService;
+import com.njhtr.yaopenghao.service.CartService;
 import com.njhtr.yaopenghao.utils.AddToCartRequest;
+import com.njhtr.yaopenghao.utils.CartCountResponse;
 import com.njhtr.yaopenghao.utils.JWTUtil;
 import com.njhtr.yaopenghao.utils.UpdateQuantityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/cart")
 @Validated
-public class cartController {
+@CrossOrigin(origins = "http://localhost:8080/yaopenghao_war_exploded", allowCredentials = "true")
+public class CartController {
     @Autowired
-    private cartService cartService;
+    private CartService cartService;
 
     @GetMapping("")
     public Result userCart(@RequestHeader("Authorization") String token) {
@@ -76,6 +78,33 @@ public class cartController {
             return Result.error(e.getMessage());
         } catch (Exception e) {
             return Result.error("系统错误: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取购物车商品数量
+     * 返回当前用户购物车中所有商品的件数（购物车项数量×商品数量）
+     *
+     * GET /api/cart/count
+     * 请求头：Authorization: Bearer {token}
+     * 返回：{ "count": 8 } // 示例
+     */
+    @GetMapping("/count")
+    public Result getCartItemCount(@RequestHeader("Authorization") String token) {
+        try {
+            // 1. 解析token获取用户ID
+            Map<String, Object> claims = JWTUtil.ParseToken(token);
+            Long userId = Long.parseLong(claims.get("id").toString());
+
+            // 2. 调用服务获取购物车商品数量
+            int count = cartService.getCartItemCount(userId);
+
+            // 3. 返回结果
+            return Result.success(new CartCountResponse(count));
+        } catch (BusinessException e) {
+            return Result.error(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            return Result.error("系统错误: " + e.getMessage(), 500);
         }
     }
 
