@@ -15,22 +15,11 @@
 <body>
     <div class="shell" id="shell">
         <div class="bubbles" id="bubbles"></div>
-
-<%--        <div class="container a-container" id="a-container">--%>
-<%--            <form action="" method="" class="form" id="a-form">--%>
-<%--                <h2 class="form_title title">重置密码</h2>--%>
-<%--                <div class="message">请输入您的邮箱以接收密码重置链接</div>--%>
-<%--                <input type="email" class="form_input" id="ForgotEmail" placeholder="邮箱">--%>
-<%--                <button class="form_button button submit">--%>
-<%--                    SEND TO EMAIL--%>
-<%--                </button>--%>
-<%--            </form>--%>
-<%--        </div>--%>
-
         <div class="container b-container" id="b-container">
             <form action="" method="" class="form" id="b-form">
                 <h2 class="form_title title">设置新密码</h2>
                 <div class="message">请设置您的新密码</div>
+                <input type="text" class="form_input" id="email" placeholder="邮箱" >
                 <input type="password" class="form_input" id="ReSetPassword" placeholder="新密码" >
                 <input type="password" class="form_input" id="ReSetRePassword" placeholder="确认密码">
                 <button class="form_button button submit" id="resetPasswordButton">
@@ -67,5 +56,6 @@
         </div>
     </div>
     <script src="./assets/js/Auth.js"></script>
+    <script src="./api/reset.js"></script>
 </body>
 </html>

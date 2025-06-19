@@ -6,9 +6,6 @@ import lombok.NonNull;
 
 @Data
 public class UserLoginDto {
-    @NonNull
     private String email;
-    @NonNull
-    @JsonIgnore
     private String password;
 }

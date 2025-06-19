@@ -64,10 +64,15 @@
                     <div class="switch_container is-hidden" id="switch-c2">
                         <h2 class="switch_title title" style="letter-spacing: 0;">Hello Friend!</h2>
                         <p class="switch_description description">去注册一个账号,成为尊贵的粉丝会员,让我们踏入奇妙的旅途!!</p>
-                        <button class="switch_button button switch-btn">SIGN UP</button>
+                        <button type="button" id="signUpButton" class="switch_button button switch-btn">SIGN UP</button>
                     </div>
                 </div>
             </div>
             <script src="./assets/js/Auth.js"></script>
+            <script src="./api/login.js"></script>
+            <script src="./api/register.js"></script>
+            <script>
+
+            </script>
         </body>
     </html>
