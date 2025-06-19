@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('token', result.data);
 
                     // 重定向到首页
-                    window.location.href = 'home.jsp';
+                    window.location.href = 'cart.jsp';
                 } else {
                     console.log('登录失败:', result.message);
                     alert('登录失败: ' + (result.message || '未知错误'));

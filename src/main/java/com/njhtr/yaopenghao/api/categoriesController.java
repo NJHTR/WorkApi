@@ -1,16 +1,16 @@
 package com.njhtr.yaopenghao.api;
 
-import com.njhtr.yaopenghao.service.cartService;
+import com.njhtr.yaopenghao.service.categoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/categories")
 @Validated
-public class cartController {
+public class categoriesController {
     @Autowired
-    private cartService cartService;
+    private categoriesService categoriesService;
 
 }
